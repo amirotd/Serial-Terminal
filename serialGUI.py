@@ -31,6 +31,7 @@ _stopBit = {'One': serial.STOPBITS_ONE, 'OnePointFive': serial.STOPBITS_ONE_POIN
 _parity = {'None': serial.PARITY_NONE, 'Even': serial.PARITY_EVEN, 'Odd': serial.PARITY_ODD,
            'Mark': serial.PARITY_MARK, 'space': serial.PARITY_SPACE}
 
+_stop_thread = True
 ser = serial.Serial()
 
 
@@ -53,9 +54,16 @@ def open_port():
             ser.rtscts = False
 
         ser.open()
-        task = Thread(target=print_result)
-        task.setDaemon(True)
-        task.start()
+        open_label_1 = tk.Label(serial_frame, image=close_photo)
+        open_label_1.grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
+        open_button_1 = tk.Button(serial_frame, text='Close Port', command=close_port, width=10)
+        open_button_1.grid(column=0, row=6, pady=(10, 0), padx=(40, 0))
+
+        try:
+            task.start()
+        except RuntimeError:
+            global _stop_thread
+            _stop_thread = True
 
     except serial.serialutil.SerialException:
         print("Please Enter a Valid Port Name!!")
@@ -64,9 +72,23 @@ def open_port():
 
 def print_result():
     while True:
-        receive_box.insert(tk.END, ser.read())
-        receive_box.see(tk.END)
-        print(ser.baudrate, ser.bytesize, ser.parity, ser.stopbits, ser.rtscts, ser.xonxoff)
+        global _stop_thread
+        while _stop_thread:
+            receive_box.insert(tk.END, ser.read())
+            receive_box.see(tk.END)
+            print(ser.baudrate, ser.bytesize, ser.parity, ser.stopbits,
+                  ser.rtscts, ser.xonxoff, ser.is_open is False)
+
+
+def close_port():
+    global _stop_thread
+    _stop_thread = False
+    ser.close()
+
+    open_label_1 = tk.Label(serial_frame, image=open_photo)
+    open_label_1.grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
+    open_button_1 = tk.Button(serial_frame, text='Open Port', command=open_port, width=10)
+    open_button_1.grid(column=0, row=6, pady=(10, 0), padx=(40, 0))
 
 
 def send_data():
@@ -175,6 +197,7 @@ handShake_box['values'] = _handShake_choices
 
 # ____________________button for opening the serial port
 open_photo = tk.PhotoImage(file='open.png')
+close_photo = tk.PhotoImage(file='close.png')
 open_label = tk.Label(serial_frame, image=open_photo)
 open_label.grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
 open_button = tk.Button(serial_frame, text='Open Port', command=open_port, width=10)
@@ -196,4 +219,6 @@ about_button = tk.Button(serial_frame, text='ABOUT', foreground='blue', width=10
 about_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
 
 if __name__ == '__main__':
+    task = Thread(target=print_result)
+    task.setDaemon(True)
     run()
