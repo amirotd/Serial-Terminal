@@ -26,7 +26,8 @@ _baudrate_choices = [50, 75, 110, 134, 150, 200, 300, 600, 1200, 1800, 2400, 480
 _handShake_choices = ['None', 'RTS/CTS', 'Xon/Xoff']
 
 _dataSize = {5: serial.FIVEBITS, 6: serial.SIXBITS, 7: serial.SEVENBITS, 8: serial.EIGHTBITS}
-_stopBit = {'One': serial.STOPBITS_ONE, 'OnePointFive': serial.STOPBITS_ONE_POINT_FIVE, 'Two': serial.STOPBITS_TWO}
+_stopBit = {'One': serial.STOPBITS_ONE, 'OnePointFive': serial.STOPBITS_ONE_POINT_FIVE,
+            'Two': serial.STOPBITS_TWO}
 _parity = {'None': serial.PARITY_NONE, 'Even': serial.PARITY_EVEN, 'Odd': serial.PARITY_ODD,
            'Mark': serial.PARITY_MARK, 'space': serial.PARITY_SPACE}
 
@@ -63,7 +64,8 @@ def open_port():
 
 def print_result():
     while True:
-        receive_box.insert(tk.INSERT, ser.read())
+        receive_box.insert(tk.END, ser.read())
+        receive_box.see(tk.END)
         print(ser.baudrate, ser.bytesize, ser.parity, ser.stopbits, ser.rtscts, ser.xonxoff)
 
 
@@ -173,20 +175,23 @@ handShake_box['values'] = _handShake_choices
 
 # ____________________button for opening the serial port
 open_photo = tk.PhotoImage(file='open.png')
-open_label = tk.Label(serial_frame, image=open_photo).grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
+open_label = tk.Label(serial_frame, image=open_photo)
+open_label.grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
 open_button = tk.Button(serial_frame, text='Open Port', command=open_port, width=10)
 open_button.grid(column=0, row=6, pady=(10, 0), padx=(40, 0))
 
 # ____________________label and button for clearing the receive data box details
 clear_photo = tk.PhotoImage(file='clear2.png')
-clear_Label = tk.Label(serial_frame, image=clear_photo).grid(column=0, row=7, sticky='w', padx=(10, 0), pady=(5, 0))
+clear_Label = tk.Label(serial_frame, image=clear_photo)
+clear_Label.grid(column=0, row=7, sticky='w', padx=(10, 0), pady=(5, 0))
 clear_button = tk.Button(serial_frame, text='Clear Output',
                          command=lambda: receive_box.delete('1.0', tk.END))
 clear_button.grid(column=0, row=7, padx=(40, 0), pady=(5, 0))
 
 # ____________________ABOUT message box button
 about_photo = tk.PhotoImage(file='about.png')
-about_label = tk.Label(serial_frame, image=about_photo).grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
+about_label = tk.Label(serial_frame, image=about_photo)
+about_label.grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
 about_button = tk.Button(serial_frame, text='ABOUT', foreground='blue', width=10, command=show_info)
 about_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
 
