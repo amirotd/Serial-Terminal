@@ -5,15 +5,8 @@
 #
 # this code is written by Amir otd :)))
 
-from __future__ import print_function
-
-try:
-    import tkinter as tk
-    from tkinter import ttk, messagebox
-except ImportError:
-    import Tkinter as tk
-    from Tkinter import ttk, messagebox
-
+import tkinter as tk
+from tkinter import ttk, messagebox
 from threading import Thread
 import serial  # pip install pyserial
 
