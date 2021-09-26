@@ -201,7 +201,8 @@ class MySerialWindow(tk.Tk):
             print("First Open a Port!!!")
             messagebox.showerror("Error", "First Open a Port!!!")
 
-    def show_info(self):
+    @staticmethod
+    def show_info():
         print(":)))))")
         messagebox.showinfo("About", "This program is written in python and\n it's"
                                      " using pyserial library and tkinter GUI")
