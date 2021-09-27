@@ -116,15 +116,15 @@ class MySerialWindow(tk.Tk):
         self.handShake_box['values'] = _handShake_choices
 
         # ____________________button for opening the serial port
-        self.open_photo = tk.PhotoImage(file='open.png')
-        self.close_photo = tk.PhotoImage(file='close.png')
+        self.open_photo = tk.PhotoImage(file='./icons/open.png')
+        self.close_photo = tk.PhotoImage(file='./icons/close.png')
         self.open_label = tk.Label(self.serial_frame, image=self.open_photo)
         self.open_label.grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
         self.open_button = tk.Button(self.serial_frame, text='Open Port', command=self.open_port, width=10)
         self.open_button.grid(column=0, row=6, pady=(10, 0), padx=(40, 0))
 
         # ____________________label and button for clearing the receive data box details
-        self.clear_photo = tk.PhotoImage(file='clear2.png')
+        self.clear_photo = tk.PhotoImage(file='./icons/clear.png')
         self.clear_Label = tk.Label(self.serial_frame, image=self.clear_photo)
         self.clear_Label.grid(column=0, row=7, sticky='w', padx=(10, 0), pady=(5, 0))
         self.clear_button = tk.Button(self.serial_frame, text='Clear Output',
@@ -132,7 +132,7 @@ class MySerialWindow(tk.Tk):
         self.clear_button.grid(column=0, row=7, padx=(40, 0), pady=(5, 0))
 
         # ____________________ABOUT message box button
-        self.about_photo = tk.PhotoImage(file='about.png')
+        self.about_photo = tk.PhotoImage(file='./icons/about.png')
         self.about_label = tk.Label(self.serial_frame, image=self.about_photo)
         self.about_label.grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
         self.about_button = tk.Button(self.serial_frame, text='ABOUT', foreground='blue', width=10,
