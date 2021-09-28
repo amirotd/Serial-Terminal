@@ -30,9 +30,9 @@ ser = serial.Serial()
 
 class MySerialWindow(tk.Tk):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
 
-        tk.Tk.__init__(self, *args, **kwargs)
+        super().__init__()
 
         # ____________________tkinter initial window configuration
 
