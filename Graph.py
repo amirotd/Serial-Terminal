@@ -10,7 +10,6 @@ class MyPlotWindow:
         self.data = [0]
         self.traces = dict()
         self.phase = 0
-        self.t = np.arange(0, 3.0, 0.01)
         self.cnt = 0
 
         pg.setConfigOptions(antialias=True)
@@ -18,10 +17,12 @@ class MyPlotWindow:
         self.win = pg.GraphicsWindow(title="Basic plotting example")
         self.win.resize(1000, 600)
         self.win.setWindowTitle('pyQtGraph example : plotting')
+        self.win.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.CustomizeWindowHint)
+        self.win.show()
         self.canvas = self.win.addPlot(title='Serial Data')
         self.canvas.showGrid(x=True, y=True, alpha=0.5)
-        self.canvas.setLabel('left', 'amplitude', units='y')
-        self.canvas.setLabel('bottom', 'Time', units='s')
+        self.canvas.setLabel('left', 'amplitude')
+        self.canvas.setLabel('bottom', 'Time')
 
         self.traces = self.canvas.plot(pen='y')
 
@@ -32,7 +33,8 @@ class MyPlotWindow:
 
     def trace(self, dataset_y):
         self.traces.setData(dataset_y)
-        self.canvas.setXRange(self.cnt - 200, self.cnt + 5, padding=0)
+        self.canvas.setXRange(0, 1000, padding=0)
+        self.canvas.setYRange(0, 1024, padding=0)
 
     def animation(self, serdata):
         timer = QtCore.QTimer()
@@ -50,8 +52,10 @@ class MyPlotWindow:
         self.app.processEvents()
 
         self.cnt = self.cnt + 1
+        if len(self.data) > 1000:
+            self.data.clear()
 
 
 if __name__ == '__main__':
     p = MyPlotWindow()
-    p.animation(2)
+    p.animation(500)

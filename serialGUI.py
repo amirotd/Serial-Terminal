@@ -8,7 +8,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from threading import Thread
-import multiprocessing
 import serial  # pip install pyserial
 from Graph import MyPlotWindow
 
@@ -27,6 +26,8 @@ _parity = {'None': serial.PARITY_NONE, 'Even': serial.PARITY_EVEN, 'Odd': serial
            'Mark': serial.PARITY_MARK, 'space': serial.PARITY_SPACE}
 
 _stop_thread = True
+_plot_start = False
+_open_graph_window = 0
 ser = serial.Serial()
 
 
@@ -137,7 +138,7 @@ class MySerialWindow(tk.Tk):
         self.plot_photo = tk.PhotoImage(file='./icons/chart.png')
         self.plot_label = tk.Label(self.serial_frame, image=self.plot_photo)
         self.plot_label.grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
-        plot_button = tk.Button(self.serial_frame, text='Plot on Chart', command=self.start_process, width=10)
+        plot_button = tk.Button(self.serial_frame, text='Plot on Chart', command=self.plot_on_graph, width=10)
         plot_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
 
         # ____________________ABOUT message box button
@@ -184,15 +185,25 @@ class MySerialWindow(tk.Tk):
 
     def print_result(self):
         while True:
-            global _stop_thread
+            global _stop_thread, _plot_start, _open_graph_window, plot
             while _stop_thread:
-                self.receive_box.insert(tk.END, ser.read())
+                x = ser.readline()
+                self.receive_box.insert(tk.END, x)
                 self.receive_box.see(tk.END)
+                if _plot_start:
+                    if _open_graph_window == 1:
+                        plot = MyPlotWindow()
+                        _open_graph_window = 2
+                    try:
+                        plot.update(float(x[:-2].decode('utf-8')))
+                    except:
+                        pass
                 print(ser.baudrate, ser.bytesize, ser.parity, ser.stopbits,
                       ser.rtscts, ser.xonxoff, ser.is_open is False)
 
     def close_port(self):
-        global _stop_thread
+        global _stop_thread, _plot_start
+        _plot_start = False
         _stop_thread = False
         ser.close()
 
@@ -217,18 +228,14 @@ class MySerialWindow(tk.Tk):
                                      " using pyserial library and tkinter GUI")
 
     @staticmethod
-    def plot_on_graph(num):
-        plot = MyPlotWindow()
-        plot.animation(num)
-
-    @staticmethod
-    def start_process():
-        proc.start()
+    def plot_on_graph():
+        global _plot_start, _open_graph_window
+        _plot_start = not _plot_start
+        _open_graph_window = _open_graph_window + 1
 
 
 if __name__ == '__main__':
     app = MySerialWindow()
     task = Thread(target=app.print_result)
     task.setDaemon(True)
-    proc = multiprocessing.Process(target=app.plot_on_graph, args=(5,))
     app.mainloop()
