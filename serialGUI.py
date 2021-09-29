@@ -37,7 +37,7 @@ class MySerialWindow(tk.Tk):
         # ____________________tkinter initial window configuration
 
         self.title("Serial Terminal")
-        self.geometry('1000x425+200+100')
+        self.geometry('1000x470+200+100')
         self['padx'] = 20
         self['pady'] = 20
 
@@ -133,14 +133,18 @@ class MySerialWindow(tk.Tk):
 
         # ____________________Plot button
         self.plot_photo = tk.PhotoImage(file='./icons/chart.png')
+        self.plot_label = tk.Label(self.serial_frame, image=self.plot_photo)
+        self.plot_label.grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
+        plot_button = tk.Button(self.serial_frame, text='Plot on Chart', width=10)
+        plot_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
 
         # ____________________ABOUT message box button
         self.about_photo = tk.PhotoImage(file='./icons/about.png')
         self.about_label = tk.Label(self.serial_frame, image=self.about_photo)
-        self.about_label.grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
+        self.about_label.grid(column=0, row=9, sticky='w', padx=(10, 0), pady=(5, 0))
         self.about_button = tk.Button(self.serial_frame, text='ABOUT', foreground='blue', width=10,
                                       command=self.show_info)
-        self.about_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
+        self.about_button.grid(column=0, row=9, pady=(5, 0), padx=(40, 0))
 
     def open_port(self):
         try:
