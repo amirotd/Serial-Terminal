@@ -131,6 +131,9 @@ class MySerialWindow(tk.Tk):
                                       command=lambda: self.receive_box.delete('1.0', tk.END))
         self.clear_button.grid(column=0, row=7, padx=(40, 0), pady=(5, 0))
 
+        # ____________________Plot button
+        self.plot_photo = tk.PhotoImage(file='./icons/chart.png')
+
         # ____________________ABOUT message box button
         self.about_photo = tk.PhotoImage(file='./icons/about.png')
         self.about_label = tk.Label(self.serial_frame, image=self.about_photo)
