@@ -8,7 +8,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from threading import Thread
+import multiprocessing
 import serial  # pip install pyserial
+from Graph import MyPlotWindow
 
 
 _baudrate_choices = [50, 75, 110, 134, 150, 200, 300, 600, 1200, 1800, 2400, 4800,
@@ -135,7 +137,7 @@ class MySerialWindow(tk.Tk):
         self.plot_photo = tk.PhotoImage(file='./icons/chart.png')
         self.plot_label = tk.Label(self.serial_frame, image=self.plot_photo)
         self.plot_label.grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
-        plot_button = tk.Button(self.serial_frame, text='Plot on Chart', width=10)
+        plot_button = tk.Button(self.serial_frame, text='Plot on Chart', command=self.start_process, width=10)
         plot_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
 
         # ____________________ABOUT message box button
@@ -214,9 +216,19 @@ class MySerialWindow(tk.Tk):
         messagebox.showinfo("About", "This program is written in python and\n it's"
                                      " using pyserial library and tkinter GUI")
 
+    @staticmethod
+    def plot_on_graph(num):
+        plot = MyPlotWindow()
+        plot.animation(num)
+
+    @staticmethod
+    def start_process():
+        proc.start()
+
 
 if __name__ == '__main__':
     app = MySerialWindow()
     task = Thread(target=app.print_result)
     task.setDaemon(True)
+    proc = multiprocessing.Process(target=app.plot_on_graph, args=(5,))
     app.mainloop()
