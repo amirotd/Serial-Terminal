@@ -225,8 +225,11 @@ class MySerialWindow(tk.Tk):
                                      " using pyserial library and tkinter GUI")
 
     def plot_on_graph(self):
-        self._plot_start = not self._plot_start
-        self._open_graph_window = self._open_graph_window + 1
+        if ser.is_open:
+            self._plot_start = not self._plot_start
+            self._open_graph_window = self._open_graph_window + 1
+        else:
+            messagebox.showerror("Error", "First Open a Port!!!")
 
 
 if __name__ == '__main__':
