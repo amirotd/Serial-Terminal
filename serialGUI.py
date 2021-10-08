@@ -183,6 +183,7 @@ class MySerialWindow(tk.Tk):
 
     def print_result(self):
         while True:
+            # noinspection PyGlobalUndefined
             global plot
             while self._stop_thread:
                 x = ser.readline()
