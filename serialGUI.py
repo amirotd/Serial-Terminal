@@ -193,6 +193,7 @@ class MySerialWindow(tk.Tk):
                     if self._open_graph_window == 1:
                         plot = MyPlotWindow()
                         self._open_graph_window = 2
+                    # noinspection PyBroadException
                     try:
                         plot.update(float(x[:-2].decode('utf-8')))
                     except:
