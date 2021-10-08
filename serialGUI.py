@@ -25,9 +25,6 @@ _stopBit = {'One': serial.STOPBITS_ONE, 'OnePointFive': serial.STOPBITS_ONE_POIN
 _parity = {'None': serial.PARITY_NONE, 'Even': serial.PARITY_EVEN, 'Odd': serial.PARITY_ODD,
            'Mark': serial.PARITY_MARK, 'space': serial.PARITY_SPACE}
 
-_stop_thread = True
-_plot_start = False
-_open_graph_window = 0
 ser = serial.Serial()
 
 
@@ -36,9 +33,11 @@ class MySerialWindow(tk.Tk):
     def __init__(self):
 
         super().__init__()
+        self._stop_thread = True
+        self._plot_start = False
+        self._open_graph_window = 0
 
         # ____________________tkinter initial window configuration
-
         self.title("Serial Terminal")
         self.geometry('1000x470+200+100')
         self['padx'] = 20
@@ -138,8 +137,8 @@ class MySerialWindow(tk.Tk):
         self.plot_photo = tk.PhotoImage(file='./icons/chart.png')
         self.plot_label = tk.Label(self.serial_frame, image=self.plot_photo)
         self.plot_label.grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
-        plot_button = tk.Button(self.serial_frame, text='Plot on Chart', command=self.plot_on_graph, width=10)
-        plot_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
+        self.plot_button = tk.Button(self.serial_frame, text='Plot on Chart', command=self.plot_on_graph, width=10)
+        self.plot_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
 
         # ____________________ABOUT message box button
         self.about_photo = tk.PhotoImage(file='./icons/about.png')
@@ -176,8 +175,7 @@ class MySerialWindow(tk.Tk):
             try:
                 task.start()
             except RuntimeError:
-                global _stop_thread
-                _stop_thread = True
+                self._stop_thread = True
 
         except serial.serialutil.SerialException:
             print("Please Enter a Valid Port Name!!")
@@ -185,15 +183,15 @@ class MySerialWindow(tk.Tk):
 
     def print_result(self):
         while True:
-            global _stop_thread, _plot_start, _open_graph_window, plot
-            while _stop_thread:
+            global plot
+            while self._stop_thread:
                 x = ser.readline()
                 self.receive_box.insert(tk.END, x)
                 self.receive_box.see(tk.END)
-                if _plot_start:
-                    if _open_graph_window == 1:
+                if self._plot_start:
+                    if self._open_graph_window == 1:
                         plot = MyPlotWindow()
-                        _open_graph_window = 2
+                        self._open_graph_window = 2
                     try:
                         plot.update(float(x[:-2].decode('utf-8')))
                     except:
@@ -202,9 +200,8 @@ class MySerialWindow(tk.Tk):
                       ser.rtscts, ser.xonxoff, ser.is_open is False)
 
     def close_port(self):
-        global _stop_thread, _plot_start
-        _plot_start = False
-        _stop_thread = False
+        self._plot_start = False
+        self._stop_thread = False
         ser.close()
 
         open_label_1 = tk.Label(self.serial_frame, image=self.open_photo)
@@ -227,11 +224,9 @@ class MySerialWindow(tk.Tk):
         messagebox.showinfo("About", "This program is written in python and\n it's"
                                      " using pyserial library and tkinter GUI")
 
-    @staticmethod
-    def plot_on_graph():
-        global _plot_start, _open_graph_window
-        _plot_start = not _plot_start
-        _open_graph_window = _open_graph_window + 1
+    def plot_on_graph(self):
+        self._plot_start = not self._plot_start
+        self._open_graph_window = self._open_graph_window + 1
 
 
 if __name__ == '__main__':
