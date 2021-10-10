@@ -7,7 +7,7 @@ import sys
 class MyPlotWindow:
 
     def __init__(self):
-        self._data = [0]
+        self._data = [0.0]
         self._cnt = 0
 
         pg.setConfigOptions(antialias=True)
@@ -33,13 +33,13 @@ class MyPlotWindow:
         self._canvas.setXRange(0, 1000, padding=0)
         self._canvas.setYRange(0, 1024, padding=0)
 
-    def animation(self, running_data):
+    def animation(self, running_data: float) -> None:
         timer = QtCore.QTimer()
         timer.timeout.connect(lambda: self.update(running_data))
         timer.start()
         self._start()
 
-    def update(self, input_data):
+    def update(self, input_data: float) -> None:
         self._data.append(input_data)
         _new_data = np.array(self._data, dtype='float64')
         self._trace(_new_data)
