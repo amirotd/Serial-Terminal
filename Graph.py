@@ -1,3 +1,6 @@
+# by amir otd
+# github: https://github.com/amirotd
+
 from PyQt5 import QtCore, QtWidgets
 import numpy as np
 import pyqtgraph as pg
@@ -5,6 +8,13 @@ import sys
 
 
 class MyPlotWindow:
+    """
+    Class for represent and Plot Serial Data on Graph
+
+    Methods:
+        update: Used to get the `input data` and plot it.
+        animation: Used to plot data on graph continuously.
+    """
 
     def __init__(self):
         self._data = [0.0]
@@ -34,12 +44,31 @@ class MyPlotWindow:
         self._canvas.setYRange(0, 1024, padding=0)
 
     def animation(self, running_data: float) -> None:
+        """
+        plot data on graph continuously.
+
+        This Method uses update method to plot the `float` data
+        that user wants on the graph continuously. at the end it
+        uses `_start` Method to start the plotting operation.
+
+        :param running_data: The `float` data that user wants to plot.
+        """
         timer = QtCore.QTimer()
         timer.timeout.connect(lambda: self.update(running_data))
         timer.start()
         self._start()
 
     def update(self, input_data: float) -> None:
+        """
+        get the `input data` and plot it.
+
+        This Method stores the input data into a list and gives the
+        list to a numpy array.This array will be given to `_trace` Method to
+        plot the data. at the end it clears the list when it reaches
+        to a specific points of data.
+
+        :param input_data: The `float` data that user wants to plot.
+        """
         self._data.append(input_data)
         _new_data = np.array(self._data, dtype='float64')
         self._trace(_new_data)
