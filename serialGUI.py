@@ -39,7 +39,7 @@ class MySerialWindow(tk.Tk):
 
         # ____________________tkinter initial window configuration
         self.title("Serial Terminal")
-        self.geometry('1000x470+200+100')
+        self.geometry('1200x540+200+100')
         self['padx'] = 20
         self['pady'] = 20
 
@@ -122,7 +122,7 @@ class MySerialWindow(tk.Tk):
         self.close_photo = tk.PhotoImage(file='./icons/close.png')
         self.open_label = tk.Label(self.serial_frame, image=self.open_photo)
         self.open_label.grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
-        self.open_button = tk.Button(self.serial_frame, text='Open Port', command=self.open_port, width=10)
+        self.open_button = tk.Button(self.serial_frame, text='Open Port', command=self.open_port, width=15)
         self.open_button.grid(column=0, row=6, pady=(10, 0), padx=(40, 0))
 
         # ____________________label and button for clearing the receive data box details
@@ -130,21 +130,21 @@ class MySerialWindow(tk.Tk):
         self.clear_Label = tk.Label(self.serial_frame, image=self.clear_photo)
         self.clear_Label.grid(column=0, row=7, sticky='w', padx=(10, 0), pady=(5, 0))
         self.clear_button = tk.Button(self.serial_frame, text='Clear Output',
-                                      command=lambda: self.receive_box.delete('1.0', tk.END))
+                                      command=lambda: self.receive_box.delete('1.0', tk.END), width=15)
         self.clear_button.grid(column=0, row=7, padx=(40, 0), pady=(5, 0))
 
         # ____________________Plot button
         self.plot_photo = tk.PhotoImage(file='./icons/chart.png')
         self.plot_label = tk.Label(self.serial_frame, image=self.plot_photo)
         self.plot_label.grid(column=0, row=8, sticky='w', padx=(10, 0), pady=(5, 0))
-        self.plot_button = tk.Button(self.serial_frame, text='Plot on Chart', command=self.plot_on_graph, width=10)
+        self.plot_button = tk.Button(self.serial_frame, text='Plot on Chart', command=self.plot_on_graph, width=15)
         self.plot_button.grid(column=0, row=8, pady=(5, 0), padx=(40, 0))
 
         # ____________________ABOUT message box button
         self.about_photo = tk.PhotoImage(file='./icons/about.png')
         self.about_label = tk.Label(self.serial_frame, image=self.about_photo)
         self.about_label.grid(column=0, row=9, sticky='w', padx=(10, 0), pady=(5, 0))
-        self.about_button = tk.Button(self.serial_frame, text='ABOUT', foreground='blue', width=10,
+        self.about_button = tk.Button(self.serial_frame, text='ABOUT', foreground='blue', width=15,
                                       command=self.show_info)
         self.about_button.grid(column=0, row=9, pady=(5, 0), padx=(40, 0))
 
