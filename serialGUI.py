@@ -167,10 +167,8 @@ class MySerialWindow(tk.Tk):
                 ser.rtscts = False
 
             ser.open()
-            open_label_1 = tk.Label(self.serial_frame, image=self.close_photo)
-            open_label_1.grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
-            open_button_1 = tk.Button(self.serial_frame, text='Close Port', command=self.close_port, width=10)
-            open_button_1.grid(column=0, row=6, pady=(10, 0), padx=(40, 0))
+            self.open_label.configure(image=self.close_photo)
+            self.open_button.configure(text='Close Port', command=self.close_port)
 
             try:
                 task.start()
@@ -206,10 +204,8 @@ class MySerialWindow(tk.Tk):
         self._stop_thread = False
         ser.close()
 
-        open_label_1 = tk.Label(self.serial_frame, image=self.open_photo)
-        open_label_1.grid(column=0, row=6, sticky='w', padx=(10, 0), pady=(10, 0))
-        open_button_1 = tk.Button(self.serial_frame, text='Open Port', command=self.open_port, width=10)
-        open_button_1.grid(column=0, row=6, pady=(10, 0), padx=(40, 0))
+        self.open_label.configure(image=self.open_photo)
+        self.open_button.configure(text='Open Port', command=self.open_port)
 
     def send_data(self):
         try:
