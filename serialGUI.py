@@ -9,6 +9,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from threading import Thread
 import serial  # pip install pyserial
+import serial.tools.list_ports
 from Graph import MyPlotWindow
 
 
@@ -24,6 +25,8 @@ _stopBit = {'One': serial.STOPBITS_ONE, 'OnePointFive': serial.STOPBITS_ONE_POIN
             'Two': serial.STOPBITS_TWO}
 _parity = {'None': serial.PARITY_NONE, 'Even': serial.PARITY_EVEN, 'Odd': serial.PARITY_ODD,
            'Mark': serial.PARITY_MARK, 'space': serial.PARITY_SPACE}
+
+_available_ports = []
 
 ser = serial.Serial()
 
@@ -73,7 +76,8 @@ class MySerialWindow(tk.Tk):
 
         self.portName_var = tk.StringVar(self)
         self.portName_frame = tk.LabelFrame(self.serial_frame, text='Port Name')
-        self.portName_box = tk.Entry(self.portName_frame, textvariable=self.portName_var)
+        self.portName_box = ttk.Combobox(self.portName_frame, text=self.portName_var,
+                                         value=self.portName_var, values=_available_ports)
         self.portName_frame.grid(column=0, row=0)
         self.portName_box.grid(column=0, row=0)
 
@@ -228,6 +232,13 @@ class MySerialWindow(tk.Tk):
             self._open_graph_window = self._open_graph_window + 1
         else:
             messagebox.showerror("Error", "First Open a Port!!!")
+
+    def update_port(self):
+        ports = serial.tools.list_ports.comports()
+        for port in sorted(ports):
+            _available_ports.append(port.device)
+            print(port.device)
+        self.portName_box.configure(values=_available_ports)
 
 
 if __name__ == '__main__':
