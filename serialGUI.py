@@ -120,6 +120,7 @@ class MySerialWindow(tk.Tk):
         self.handShake_box = ttk.Combobox(self.handShake_frame, text=self.handShakeVar, value=self.handShakeVar)
         self.handShake_box.grid(column=0, row=0)
         self.handShake_box['values'] = _handShake_choices
+
         # ____________________button for refreshing serial ports
         self.refresh_photo = tk.PhotoImage(file='./icons/refresh.png')
         self.refresh_button = tk.Button(self.portName_frame, image=self.refresh_photo, command=self.update_port)
@@ -238,6 +239,7 @@ class MySerialWindow(tk.Tk):
             messagebox.showerror("Error", "First Open a Port!!!")
 
     def update_port(self):
+        _available_ports.clear()
         ports = serial.tools.list_ports.comports()
         for port in sorted(ports):
             _available_ports.append(port.device)
