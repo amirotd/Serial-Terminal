@@ -77,7 +77,7 @@ class MySerialWindow(tk.Tk):
         self.portName_var = tk.StringVar(self)
         self.portName_frame = tk.LabelFrame(self.serial_frame, text='Port Name')
         self.portName_box = ttk.Combobox(self.portName_frame, text=self.portName_var,
-                                         value=self.portName_var, values=_available_ports)
+                                         value=self.portName_var, values=_available_ports, width=15)
         self.portName_frame.grid(column=0, row=0)
         self.portName_box.grid(column=0, row=0)
 
@@ -120,6 +120,10 @@ class MySerialWindow(tk.Tk):
         self.handShake_box = ttk.Combobox(self.handShake_frame, text=self.handShakeVar, value=self.handShakeVar)
         self.handShake_box.grid(column=0, row=0)
         self.handShake_box['values'] = _handShake_choices
+        # ____________________button for refreshing serial ports
+        self.refresh_photo = tk.PhotoImage(file='./icons/refresh.png')
+        self.refresh_button = tk.Button(self.portName_frame, image=self.refresh_photo, command=self.update_port)
+        self.refresh_button.grid(column=1, row=0)
 
         # ____________________button for opening the serial port
         self.open_photo = tk.PhotoImage(file='./icons/open.png')
