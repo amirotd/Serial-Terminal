@@ -6,3 +6,6 @@ For simple data communication, this project uses a GUI which is made by the pyth
 ### Features
 - a graphical user interface (GUI) for simple data communication
 - plotting data on graph using pyqtgraph
+
+### Credits
+The project uses the [pyserial](https://github.com/pyserial/pyserial) library.
