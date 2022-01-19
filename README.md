@@ -8,5 +8,5 @@
 - plotting data on graph using pyqtgraph (for now this feature is only for python version)
 
 ### Credits
- The project uses the [pyserial](https://github.com/pyserial/pyserial) library.
+ The project uses the [pyserial](https://github.com/pyserial/pyserial) library.<br>
  also it uses Qt 6.2.1
