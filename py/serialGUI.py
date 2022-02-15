@@ -3,7 +3,7 @@
 #
 # In this code i used  https://github.com/pyserial/pyserial
 #
-# this code is written by Amir otd :)))
+# Coded by Amir otd :)))
 
 import tkinter as tk
 from tkinter import ttk, messagebox
